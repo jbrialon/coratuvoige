@@ -21,7 +21,7 @@
           </div>
           <div class="input-field col m6 s12">
             <select v-model="newRide.driver">
-              <option v-for="driver in drivers['.value']" :value="driver.id" :disabled="driver.candrive === 0 ? true : false">{{ driver.name }}</option>
+              <option v-for="driver in drivers['.value']" :value="driver.id" :disabled="driver.candrive === 0">{{ driver.name }}</option>
             </select>
           </div>
         </div>
