@@ -61,7 +61,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="ride in rides">
+            <tr v-for="(ride, index) in rides" v-if="ride !== 'rides'">
               <td>
                 {{ getDriverPerId(ride.driver) }}
               </td>
@@ -72,7 +72,7 @@
                 {{ ride.date }}
               </td>
               <td>
-
+                <a class="btn-floating"><i class="material-icons" @click="remove(index)">remove</i></a>
               </td>
             </tr>
           </tbody>
@@ -116,6 +116,12 @@ export default {
     },
     getDriverPerId (id) {
       return id !== undefined ? this.drivers['.value'][id].name : ''
+    },
+    remove (key) {
+      let confirmation = window.confirm('Fais pas le con Philippe ! t\'es sûr ?')
+      if (confirmation) {
+        firebase.dbRidesRef.child(key).remove()
+      }
     }
   },
   firebase: {
