@@ -61,7 +61,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(ride, index) in ridesOrdered" v-if="ride !== 'rides'">
+            <tr v-for="ride in ridesOrdered" v-if="ride !== 'rides'">
               <td>
                 {{ getDriverNamePerId(ride.driver) }}
               </td>
@@ -72,7 +72,7 @@
                 {{ ride.date }}
               </td>
               <td>
-                <a class="btn-floating"><i class="material-icons" @click="remove(index)">remove</i></a>
+                <a class="btn-floating"><i class="material-icons" @click="remove(ride['.key'])">remove</i></a>
               </td>
             </tr>
           </tbody>
