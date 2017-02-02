@@ -27,7 +27,7 @@
         </div>
         <div class="row">
           <div class="input-field col m2" v-for="driver in drivers">
-            <input v-model="newRide.checkbox[driver.id]" type="checkbox" class="filled-in" :id="driver.name" />
+            <input v-model="newRide.checkbox[driver.id]" type="checkbox" class="filled-in" :id="driver.name" :disabled="isDriving(driver.id)"/>
             <label :for="driver.name">{{ driver.name }}</label>
           </div>
         </div>
@@ -125,6 +125,9 @@ export default {
       if (confirmation) {
         firebase.dbRidesRef.child(key).remove()
       }
+    },
+    isDriving (id) {
+      return this.newRide.driver !== '' && this.newRide.driver === id
     }
   },
   firebase: {
