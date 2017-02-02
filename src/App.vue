@@ -72,7 +72,7 @@
                 {{ ride.date }}
               </td>
               <td>
-                <a class="btn-floating"><i class="material-icons" @click="remove(index)">remove</i></a>
+                <a class="btn-floating"><i class="material-icons" @click="remove(ride['.key'])">remove</i></a>
               </td>
             </tr>
           </tbody>
