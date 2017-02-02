@@ -21,12 +21,12 @@
           </div>
           <div class="input-field col m6 s12">
             <select v-model="newRide.driver">
-              <option v-for="driver in drivers['.value']" :value="driver.id" :disabled="driver.candrive === 0">{{ driver.name }}</option>
+              <option v-for="driver in drivers" :value="driver.id" :disabled="driver.candrive === 0">{{ driver.name }}</option>
             </select>
           </div>
         </div>
         <div class="row">
-          <div class="input-field col m2" v-for="driver in drivers['.value']">
+          <div class="input-field col m2" v-for="driver in drivers">
             <input v-model="newRide.checkbox[driver.id]" type="checkbox" class="filled-in" :id="driver.name" />
             <label :for="driver.name">{{ driver.name }}</label>
           </div>
@@ -118,7 +118,7 @@ export default {
       }
     },
     getDriverNamePerId (id) {
-      return id !== undefined ? this.drivers['.value'][id].name : ''
+      return id !== undefined ? this.drivers[id].name : ''
     },
     remove (key) {
       let confirmation = window.confirm('Fais pas le con Philippe ! t\'es sûr ?')
@@ -133,8 +133,7 @@ export default {
       asObject: true
     },
     drivers: {
-      source: firebase.dbDriversRef,
-      asObject: true
+      source: firebase.dbDriversRef
     },
     rides: {
       source: firebase.dbRidesRef
