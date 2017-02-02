@@ -61,7 +61,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(ride, index) in rides" v-if="ride !== 'rides'">
+            <tr v-for="(ride, index) in ridesOrdered" v-if="ride !== 'rides'">
               <td>
                 {{ getDriverNamePerId(ride.driver) }}
               </td>
@@ -99,6 +99,9 @@ export default {
     }
   },
   computed: {
+    ridesOrdered () {
+      return this.rides.sort((a, b) => b.date > a.date)
+    },
     canSubmit () {
       return this.newRide.driver !== '' && !isEmpty(this.newRide.checkbox) && this.newRide.date !== ''
     }
@@ -134,8 +137,7 @@ export default {
       asObject: true
     },
     rides: {
-      source: firebase.dbRidesRef,
-      asObject: true
+      source: firebase.dbRidesRef
     }
   }
 }
