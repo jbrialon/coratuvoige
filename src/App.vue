@@ -63,10 +63,10 @@
           <tbody>
             <tr v-for="(ride, index) in rides" v-if="ride !== 'rides'">
               <td>
-                {{ getDriverPerId(ride.driver) }}
+                {{ getDriverNamePerId(ride.driver) }}
               </td>
               <td>
-                <span v-for="passenger in ride.passengers"> {{ getDriverPerId(passenger) }} </span>
+                <span v-for="passenger in ride.passengers"> {{ getDriverNamePerId(passenger) }} </span>
               </td>
               <td>
                 {{ ride.date }}
@@ -114,7 +114,7 @@ export default {
         firebase.dbRidesRef.push(newRide)
       }
     },
-    getDriverPerId (id) {
+    getDriverNamePerId (id) {
       return id !== undefined ? this.drivers['.value'][id].name : ''
     },
     remove (key) {
@@ -149,7 +149,6 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
 
   select {
     display: block;
