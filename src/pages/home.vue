@@ -117,6 +117,11 @@ export default {
       return this.newRide.driver !== '' && this.newRide.driver === id
     }
   },
+  watch: {
+    'newRide.driver': function (driverId) {
+      delete this.newRide.checkbox[driverId]
+    }
+  },
   firebase: {
     drivers: {
       source: firebase.dbDriversRef
