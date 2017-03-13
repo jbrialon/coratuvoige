@@ -5,6 +5,11 @@ import App from './App'
 import VueRouter from 'vue-router'
 
 import routes from './routes.js'
+import ElementUI from 'element-ui'
+import 'element-ui/lib/theme-default/index.css'
+import locale from 'element-ui/lib/locale/lang/en'
+
+Vue.use(ElementUI, { locale })
 Vue.use(VueRouter)
 
 const router = new VueRouter({

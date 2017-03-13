@@ -19,52 +19,24 @@
           <label :for="driver.name">{{ driver.name }}</label>
         </div>
       </div>
-      <div class="row">
-        <div class="input-field col m6 s12">
-          <input v-model="newRide.date" placeholder="date" id="first_name" type="date">
+      <div class="row row--datepicker">
+        <div class="input-field col m8 s12">
+          <el-date-picker
+            size="large"
+            v-model="newRide.date"
+            type="date"
+            format="yyyy-MM-dd"
+            placeholder="date"
+            id="first_name">
+          </el-date-picker>
         </div>
-        <div class="col m6 s12">
+        <div class="col m4 s12">
           <a class="btn-floating btn-large waves-effect waves-light red" @click="add()" :class="{'disabled': !canSubmit}">
             <i class="material-icons">add</i>
           </a>
         </div>
       </div>
-
-      <!-- list -->
-      <table class="striped responsive-table">
-        <thead>
-          <tr>
-            <th data-field="driver">
-              Driver
-            </th>
-            <th data-field="passengers">
-              Passengers
-            </th>
-            <th data-field="date">
-              Date
-            </th>
-            <th data-field="action">
-              Action
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="ride in ridesOrdered" v-if="ride !== 'rides'">
-            <td>
-              {{ getDriverNamePerId(ride.driver) }}
-            </td>
-            <td>
-              <router-link :to="{ name: 'driver', params: { id: passenger }}" v-for="passenger in ride.passengers"> {{ getDriverNamePerId(passenger) }} </router-link>
-            </td>
-            <td>
-              {{ ride.date }}
-            </td>
-            <td>
-              <a class="btn-floating"><i class="material-icons" @click="remove(ride['.key'])">remove</i></a>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      <rideList :drivers="drivers" :rides="rides" @remove="remove"></rideList>
     </div>
   </div>
 </template>
@@ -74,31 +46,29 @@ import * as firebase from '../db/firebase'
 import keys from 'lodash/keys'
 import isEmpty from 'lodash/isEmpty'
 
+import rideList from '../components/ride-list'
+
 export default {
   name: 'home',
+  components: {
+    rideList
+  },
   data () {
     return {
       newRide: {
         driver: '',
         checkbox: {},
-        date: ''
+        date: new Date()
       }
     }
   },
   computed: {
-    ridesOrdered () {
-      return this.rides.sort((a, b) => {
-        if (b.date > a.date) {
-          return 1
-        } else if (b.date < a.date) {
-          return -1
-        }
-
-        return 0
-      })
-    },
     canSubmit () {
-      return this.newRide.driver !== '' && !isEmpty(this.newRide.checkbox) && this.newRide.date !== ''
+      console.log('canSubmit')
+      const isDriver = this.newRide.driver !== ''
+      const isCheckbox = !isEmpty(this.newRide.checkbox)
+      const isDate = this.newRide.date
+      return isDriver && isCheckbox && isDate
     }
   },
   methods: {
@@ -106,7 +76,7 @@ export default {
       let newRide = {
         'driver': this.newRide.driver,
         'passengers': keys(this.newRide.checkbox),
-        'date': this.newRide.date
+        'date': this.newRide.date.toString()
       }
       if (this.canSubmit) {
         firebase.dbRidesRef.push(newRide)
@@ -116,10 +86,22 @@ export default {
       return id !== undefined ? this.drivers[id].name : ''
     },
     remove (key) {
-      let confirmation = window.confirm('Fais pas le con Philippe ! t\'es sûr ?')
-      if (confirmation) {
+      this.$confirm('Fais pas le con Philippe ! t\'es sûr ?', 'Warning', {
+        confirmButtonText: 'OK',
+        cancelButtonText: 'Cancel',
+        type: 'warning'
+      }).then(() => {
         firebase.dbRidesRef.child(key).remove()
-      }
+        this.$message({
+          type: 'success',
+          message: 'Delete completed'
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: 'Delete canceled'
+        })
+      })
     },
     isDriving (id) {
       return this.newRide.driver !== '' && this.newRide.driver === id
@@ -141,7 +123,26 @@ export default {
 }
 </script>
 
+<style lang="scss" scoped>
+
+.row--datepicker {
+  margin-top: 3em;
+  margin-bottom: 3em;
+}
+
+.el-date-editor.el-input {
+  width: 100%;
+}
+
+</style>
+
 <style lang="scss">
 
+.el-date-editor.el-input {
+  input {
+    box-sizing: border-box;
+    margin-bottom: 0;
+  }
+}
 
 </style>
