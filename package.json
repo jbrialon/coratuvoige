@@ -11,6 +11,8 @@
     "deploy": "npm run build && node build/deploy.js"
   },
   "dependencies": {
+    "date-fns": "^1.28.0",
+    "element-ui": "^1.2.4",
     "firebase": "^3.6.8",
     "lodash": "^4.17.4",
     "materialize-css": "^0.98.0",
