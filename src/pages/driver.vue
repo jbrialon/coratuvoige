@@ -76,8 +76,11 @@ export default {
         previousDate = date
       }
 
-      // Reverse the array to order it by newest dates
-      return data.reverse()
+      // Reverse the array to order it by newest dates and return only months
+      // where the user has been driver or passenger at least once
+      return data.reverse().filter((ridesByMonth) => {
+        return ridesByMonth.driver.length > 0 || ridesByMonth.passenger.length > 0
+      })
     }
   },
   methods: {
