@@ -1,10 +1,10 @@
 <template>
-  <div class="row">
+  <div class="driver row">
     <p><router-link :to="{ path: '/' }">Back to home</router-link></p>
 
     <h2>{{ driverName }}</h2>
 
-    <div v-for="ridesInMonth in ridesByMonths">
+    <div class="driver__rides" v-for="ridesInMonth in ridesByMonths">
       <h5>{{ ridesInMonth.date }}</h5>
 
       <div v-if="ridesInMonth.driver.length">
@@ -43,28 +43,41 @@ export default {
       return this.getDriverNamePerId(this.id)
     },
     ridesByMonths () {
-      let data = {}
+      let data = []
+      let index = 0
+      let previousDate = null
 
       for (let ride of this.rides) {
         const date = moment(ride.date)
-        const dateKey = date.format('YYYY-MM')
 
-        if (data[dateKey] === undefined) {
-          data[dateKey] = {
+        // Search if the we entered in a new month
+        if (previousDate !== null && date.format('M') !== previousDate.format('M')) {
+          index++
+        }
+
+        // If it's a new month or the first iteration, insert the template into
+        // the array
+        if (data.length <= index) {
+          data.push({
             'date': capitalize(date.format('MMMM YYYY')),
             'driver': [],
             'passenger': []
-          }
+          })
         }
 
         if (ride.driver === this.id) {
-          data[dateKey]['driver'].unshift(ride)
+          data[index]['driver'].unshift(ride)
         } else if (ride.passengers.includes(String(this.id))) {
-          data[dateKey]['passenger'].unshift(ride)
+          data[index]['passenger'].unshift(ride)
         }
+
+        // Assign the current date as the previous date for the comparison
+        // in the next iteration
+        previousDate = date
       }
 
-      return data
+      // Reverse the array to order it by newest dates
+      return data.reverse()
     }
   },
   methods: {
@@ -89,6 +102,9 @@ export default {
 </script>
 
 <style lang="scss">
-
-
+.driver {
+  &__rides {
+    margin-bottom: 30px;
+  }
+}
 </style>
