@@ -1,6 +1,6 @@
-# coratuvoige 🚗💨
+# Coratuvoige 🚗💨
 
-> Work in progress, a carsharing tool to share commutes expenses
+> Work in progress, A carpooling tool to share commute expenses between coworkers
 
 ## Build Setup
 

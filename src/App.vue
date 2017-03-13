@@ -5,7 +5,7 @@
         <div class="row">
           <div class="col s12 align-center center-align">
             <h2>
-              {{ config.name }}
+              {{ config.name }} 🚗💨
             </h2>
           </div>
         </div>

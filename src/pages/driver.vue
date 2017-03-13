@@ -1,6 +1,8 @@
 <template>
   <div class="row">
-    {{ getDriverNamePerId(id) }}
+    {{ driverName }} {{ this.id}}
+
+    <pre> {{ ridesAsDriver }} </pre>
   </div>
 </template>
 
@@ -14,9 +16,24 @@ export default {
       id: this.$route.params.id
     }
   },
-  methods: {
-    getDriverNamePerId (id) {
-      return this.drivers[id] !== undefined ? this.drivers[id].name : ''
+  computed: {
+    driverName () {
+      return this.drivers[this.id] !== undefined ? this.drivers[this.id].name : ''
+    },
+    ridesAsDriver () {
+      return this.rides.map((ride) => {
+        console.log(ride.driver)
+        if (ride.driver === this.id) {
+          return ride
+        }
+      })
+    },
+    ridesAsPassengers () {
+      return this.rides.map((ride) => {
+        if (ride.passengers.includes(this.id)) {
+          return ride
+        }
+      })
     }
   },
   firebase: {
