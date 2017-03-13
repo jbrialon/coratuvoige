@@ -15,7 +15,7 @@
       </div>
       <div class="row">
         <div class="input-field col m2" v-for="driver in drivers">
-          <input v-model="newRide.checkbox[driver.id]" type="checkbox" class="filled-in" :id="driver.name" :disabled="isDriving(driver.id)"/>
+          <input v-model="newRide.checkbox" type="checkbox" class="filled-in" :id="driver.name" :disabled="isDriving(driver.id)" :value="driver.id"/>
           <label :for="driver.name">{{ driver.name }}</label>
         </div>
       </div>
@@ -71,8 +71,6 @@
 
 <script>
 import * as firebase from '../db/firebase'
-import keys from 'lodash/keys'
-import isEmpty from 'lodash/isEmpty'
 
 export default {
   name: 'home',
@@ -80,7 +78,7 @@ export default {
     return {
       newRide: {
         driver: '',
-        checkbox: {},
+        checkbox: [],
         date: ''
       }
     }
@@ -98,14 +96,14 @@ export default {
       })
     },
     canSubmit () {
-      return this.newRide.driver !== '' && !isEmpty(this.newRide.checkbox) && this.newRide.date !== ''
+      return this.newRide.driver !== '' && this.newRide.checkbox.length > 0 && this.newRide.date !== ''
     }
   },
   methods: {
     add () {
       let newRide = {
         'driver': this.newRide.driver,
-        'passengers': keys(this.newRide.checkbox),
+        'passengers': this.newRide.checkbox,
         'date': this.newRide.date
       }
       if (this.canSubmit) {
@@ -127,7 +125,11 @@ export default {
   },
   watch: {
     'newRide.driver': function (driverId) {
-      delete this.newRide.checkbox[driverId]
+      const index = this.newRide.checkbox.indexOf(driverId)
+
+      if (index > -1) {
+        this.newRide.checkbox.splice(index, 1)
+      }
     }
   },
   firebase: {
