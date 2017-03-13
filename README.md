@@ -1,6 +1,6 @@
-# coratuvoige
+# coratuvoige 🚗💨
 
-> A Vue.js project
+> Work in progress, a carsharing tool to share commutes expenses
 
 ## Build Setup
 
