@@ -8,14 +8,16 @@
       <div v-if="ridesInMonth.driver.length">
         <p><strong>As Driver</strong></p>
         <p v-for="ride in ridesInMonth.driver">
-          <strong>{{ ride.date }}</strong> with {{ ride.passengers }}
+          <strong>{{ ride.date }}</strong> with
+          <router-link :to="{ name: 'driver', params: { id: passenger }}" v-for="passenger in ride.passengers"> {{ getDriverNamePerId(passenger) }} </router-link>
         </p>
       </div>
 
       <div v-if="ridesInMonth.passenger.length">
         <p><strong>As Passenger</strong></p>
         <p v-for="ride in ridesInMonth.passenger">
-          <strong>{{ ride.date }}</strong> with {{ ride.passengers }}
+          <strong>{{ ride.date }}</strong> with
+          <router-link :to="{ name: 'driver', params: { id: passenger }}" v-for="passenger in ride.passengers"> {{ getDriverNamePerId(passenger) }} </router-link>
         </p>
       </div>
     </div>
@@ -36,7 +38,7 @@ export default {
   },
   computed: {
     driverName () {
-      return this.drivers[this.id] !== undefined ? this.drivers[this.id].name : ''
+      return this.getDriverNamePerId(this.id)
     },
     ridesByMonths () {
       let data = {}
@@ -61,6 +63,16 @@ export default {
       }
 
       return data
+    }
+  },
+  methods: {
+    getDriverNamePerId (driverId) {
+      return this.drivers[driverId] !== undefined ? this.drivers[driverId].name : ''
+    }
+  },
+  watch: {
+    '$route': function (route) {
+      this.id = parseInt(route.params.id)
     }
   },
   firebase: {
