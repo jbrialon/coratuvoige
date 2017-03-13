@@ -1,6 +1,6 @@
 <template>
   <div class="driver row">
-    <p><router-link :to="{ path: '/' }">Back to home</router-link></p>
+    <p><router-link :to="{ name: 'home' }">Back to home</router-link></p>
 
     <h2>{{ driverName }}</h2>
 
