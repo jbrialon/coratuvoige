@@ -1,39 +1,62 @@
 <template>
   <div class="row">
-    {{ driverName }} {{ this.id}}
+    <h2>{{ driverName }}</h2>
 
-    <pre> {{ ridesAsDriver }} </pre>
+    <div v-for="ridesInMonth in ridesByMonths">
+      <h5>{{ ridesInMonth.date }}</h5>
+
+      <div v-if="ridesInMonth.driver.length">
+        <p><strong>As Driver</strong></p>
+        <p v-for="ride in ridesInMonth.driver">{{ ride.date }}: {{ ride.passengers }}</p>
+      </div>
+
+      <div v-if="ridesInMonth.passenger.length">
+        <p><strong>As Passenger</strong></p>
+        <p v-for="ride in ridesInMonth.passenger">{{ ride.date }}: {{ ride.passengers }}</p>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 import * as firebase from '../db/firebase'
+import moment from 'moment'
+import capitalize from 'lodash/capitalize'
 
 export default {
   name: 'driver',
   data () {
     return {
-      id: this.$route.params.id
+      id: parseInt(this.$route.params.id)
     }
   },
   computed: {
     driverName () {
       return this.drivers[this.id] !== undefined ? this.drivers[this.id].name : ''
     },
-    ridesAsDriver () {
-      return this.rides.map((ride) => {
-        console.log(ride.driver)
+    ridesByMonths () {
+      let data = {}
+
+      for (let ride of this.rides) {
+        const date = moment(ride.date)
+        const dateKey = date.format('YYYY-MM')
+
+        if (data[dateKey] === undefined) {
+          data[dateKey] = {
+            'date': capitalize(date.format('MMMM YYYY')),
+            'driver': [],
+            'passenger': []
+          }
+        }
+
         if (ride.driver === this.id) {
-          return ride
+          data[dateKey]['driver'].push(ride)
+        } else if (ride.passengers.includes(String(this.id))) {
+          data[dateKey]['passenger'].push(ride)
         }
-      })
-    },
-    ridesAsPassengers () {
-      return this.rides.map((ride) => {
-        if (ride.passengers.includes(this.id)) {
-          return ride
-        }
-      })
+      }
+
+      return data
     }
   },
   firebase: {
