@@ -87,7 +87,15 @@ export default {
   },
   computed: {
     ridesOrdered () {
-      return this.rides.sort((a, b) => b.date > a.date)
+      return this.rides.sort((a, b) => {
+        if (b.date > a.date) {
+          return 1
+        } else if (b.date < a.date) {
+          return -1
+        }
+
+        return 0
+      })
     },
     canSubmit () {
       return this.newRide.driver !== '' && !isEmpty(this.newRide.checkbox) && this.newRide.date !== ''
@@ -115,6 +123,11 @@ export default {
     },
     isDriving (id) {
       return this.newRide.driver !== '' && this.newRide.driver === id
+    }
+  },
+  watch: {
+    'newRide.driver': function (driverId) {
+      delete this.newRide.checkbox[driverId]
     }
   },
   firebase: {
