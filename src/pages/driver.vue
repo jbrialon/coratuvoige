@@ -1,5 +1,7 @@
 <template>
   <div class="row">
+    <p><router-link :to="{ path: '/' }">Back to home</router-link></p>
+
     <h2>{{ driverName }}</h2>
 
     <div v-for="ridesInMonth in ridesByMonths">
