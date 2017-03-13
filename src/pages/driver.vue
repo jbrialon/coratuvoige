@@ -7,12 +7,16 @@
 
       <div v-if="ridesInMonth.driver.length">
         <p><strong>As Driver</strong></p>
-        <p v-for="ride in ridesInMonth.driver">{{ ride.date }}: {{ ride.passengers }}</p>
+        <p v-for="ride in ridesInMonth.driver">
+          <strong>{{ ride.date }}</strong> with {{ ride.passengers }}
+        </p>
       </div>
 
       <div v-if="ridesInMonth.passenger.length">
         <p><strong>As Passenger</strong></p>
-        <p v-for="ride in ridesInMonth.passenger">{{ ride.date }}: {{ ride.passengers }}</p>
+        <p v-for="ride in ridesInMonth.passenger">
+          <strong>{{ ride.date }}</strong> with {{ ride.passengers }}
+        </p>
       </div>
     </div>
   </div>
@@ -50,9 +54,9 @@ export default {
         }
 
         if (ride.driver === this.id) {
-          data[dateKey]['driver'].push(ride)
+          data[dateKey]['driver'].unshift(ride)
         } else if (ride.passengers.includes(String(this.id))) {
-          data[dateKey]['passenger'].push(ride)
+          data[dateKey]['passenger'].unshift(ride)
         }
       }
 
