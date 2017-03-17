@@ -5,12 +5,14 @@
         <div class="row">
           <div class="col s12 align-center center-align">
             <h2>
-              {{ config.name }} 🚗💨
+              <router-link :to="{ name: 'Home'}">{{ config.name }} 🚗💨</router-link>
             </h2>
           </div>
         </div>
       </div>
-      <router-view></router-view>
+      <transition name="page" mode="out-in" @before-enter="beforeEnter">
+        <router-view></router-view>
+      </transition>
     </div>
   </div>
 </template>
@@ -25,6 +27,11 @@ export default {
       source: firebase.dbConfigRef,
       asObject: true
     }
+  },
+  methods: {
+    beforeEnter () {
+      window.scrollTo(0, 0)
+    }
   }
 }
 </script>
@@ -38,8 +45,20 @@ export default {
   text-align: center;
   color: #2c3e50;
 
+  h2 a {
+    color:black;
+  }
+
   select {
     display: block;
+  }
+
+  .page-enter-active, .page-leave-active {
+    transition: transform 750ms ease, opacity 750ms ease;
+  }
+  .page-enter, .page-leave-to {
+    opacity:0;
+    transform:translateY(-25px);
   }
 }
 

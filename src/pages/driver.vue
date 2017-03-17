@@ -22,7 +22,6 @@ export default {
     },
     ridesAsDriver () {
       return this.rides.map((ride) => {
-        console.log(ride.driver)
         if (ride.driver === this.id) {
           return ride
         }
