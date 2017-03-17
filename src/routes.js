@@ -1,5 +1,6 @@
 import Home from './pages/home.vue'
 import Driver from './pages/driver.vue'
+import Payment from './pages/payment.vue'
 
 const routes = [
   {
@@ -11,6 +12,11 @@ const routes = [
     path: '/driver/:id',
     name: 'driver',
     component: Driver
+  },
+  {
+    path: '/payment',
+    name: 'payment',
+    component: Payment
   }
 ]
 
